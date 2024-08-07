@@ -1,0 +1,6 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true 
+    }
+    //告訴vscode在文件保存的時候進行格式的處理
+}
