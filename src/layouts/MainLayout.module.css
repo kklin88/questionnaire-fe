@@ -1,0 +1,19 @@
+.header {
+  padding: 0 24px;
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+}
+
+.main {
+  min-height: calc(100vh - 64px - 65px);
+  /* 100vh：表示视口高度的100%，其中 vh 是视口单位，1vh 等于视口高度的1%。
+64px 和 65px：这两个值通常用于从总高度中减去固定的像素值，可能代表了其他元素（如顶部导航栏和底部栏）的高度。 */
+}
+.footer {
+  text-align: center;
+  border-top: 1px solid #e8e8e8;
+}

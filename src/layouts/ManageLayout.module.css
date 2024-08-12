@@ -1,0 +1,23 @@
+.container {
+  display: flex;  
+  padding: 24px 0;
+  width: 1200px;
+  margin: 0 auto;
+  
+  justify-content: center;
+  height: calc(100vh-64px-65px);
+
+  /* overflow: hidden; */
+}
+.left {
+  width: 120px;
+}
+.right {
+  flex: 1;
+  max-width: 800px; /* 可选，设置最大宽度 */
+  width: 100%;
+  margin-left: 60px;
+  padding:20px
+}
+
+  
