@@ -7,6 +7,7 @@ import { Empty, Table, Typography, Tag, Space, Button, Modal } from "antd";
 import { title } from "process";
 import { render } from "@testing-library/react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import ListSearch from "../../components/ListSearch";
 const { Title } = Typography;
 const { confirm } = Modal;
 const rawQuestionList = [
@@ -103,7 +104,9 @@ const Trash: FC = () => {
         <div className={styles.left}>
           <Title level={3}>回收站</Title>
         </div>
-        <div className={styles.right}>搜索</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.content}>
         {questonList.length === 0 && <Empty description="暫無數據" />}
