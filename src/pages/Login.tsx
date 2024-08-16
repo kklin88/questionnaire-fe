@@ -1,7 +1,15 @@
 import React, { FC, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { Typography, Space, Button, Checkbox, Form, Input } from "antd";
+import {
+  Typography,
+  Space,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+} from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
 import styles from "./Login.module.scss";
 import { REGISTER_PATHNAME } from "../router";
@@ -59,10 +67,27 @@ const Login: FC = () => {
             onFinish={onFinish}
             form={form}
           >
-            <Form.Item label="用戶名" name="username">
+            <Form.Item
+              label="用戶名"
+              name="username"
+              rules={[
+                { required: true, message: "請輸入用戶名" },
+                {
+                  type: "string",
+                  min: 5,
+                  max: 20,
+                  message: "用戶名在 5-20 之間",
+                },
+                { pattern: /^\w+$/, message: "只能是數字字母下劃線" },
+              ]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="密碼" name="password">
+            <Form.Item
+              label="密碼"
+              name="password"
+              rules={[{ required: true, message: "請輸入密碼" }]}
+            >
               <Input.Password />
             </Form.Item>
             <Form.Item

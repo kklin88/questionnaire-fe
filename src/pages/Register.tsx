@@ -27,15 +27,49 @@ const Register: FC = () => {
             style={{ maxWidth: 600 }}
             onFinish={onFinish}
           >
-            <Form.Item label="用戶名" name="username">
+            <Form.Item
+              label="用戶名"
+              name="username"
+              rules={[
+                { required: true, message: "請輸入用戶名" },
+                {
+                  type: "string",
+                  min: 5,
+                  max: 20,
+                  message: "用戶名在 5-20 之間",
+                },
+                { pattern: /^\w+$/, message: "只能是數字字母下劃線" },
+              ]}
+            >
               <Input />
             </Form.Item>
 
-            <Form.Item label="密碼" name="password">
+            <Form.Item
+              label="密碼"
+              name="password"
+              rules={[{ required: true, message: "請輸入密碼" }]}
+            >
               <Input.Password />
             </Form.Item>
 
-            <Form.Item label="確認密碼" name="confirm">
+            <Form.Item
+              label="確認密碼"
+              name="confirm"
+              dependencies={["password"]}
+              // 依賴password ，password變化，會重新觸發驗證
+              rules={[
+                { required: true, message: "請輸入密碼" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject(new Error("兩次密碼不一致"));
+                    }
+                  },
+                }),
+              ]}
+            >
               <Input.Password />
             </Form.Item>
 
