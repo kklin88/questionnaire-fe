@@ -1,26 +1,58 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { Button, Space, Divider } from "antd";
+import { Button, Space, Divider, message } from "antd";
 import {
   BarsOutlined,
   DeleteOutlined,
   PlusOutlined,
   StarOutlined,
 } from "@ant-design/icons";
-
+import { createQuestionService } from "../services/question";
 import styles from "./ManageLayout.module.css";
-import path from "path";
+import { useRequest } from "ahooks";
 
 const ManageLayout: FC = () => {
   const nav = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
+
+  // const [loading,setLoading] = useState(false)
+  // async function handleCreateClick() {
+  //   setLoading(true)
+  //   console.log("Button clicked");
+  //   const data = await createQuestionService();
+  //   const { id } = data || {};
+  //   if (id) {
+  //     nav(`/question/edit/${id}`);
+  //     message.success("創建成功");
+  //   } else {
+  //     message.error("創建失敗");
+  //   }
+  //   setLoading(false)
+  // }
+
+  const { loading, run: handleCreateClick } = useRequest(
+    createQuestionService,
+    {
+      manual: true,
+      onSuccess(result) {
+        nav(`/question/edit/${result.id}`);
+        message.success("創建成功");
+      },
+    },
+  );
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.left}>
           <Space direction="vertical">
-            <Button type="primary" size="large" icon={<PlusOutlined />}>
+            <Button
+              type="primary"
+              size="large"
+              icon={<PlusOutlined />}
+              onClick={handleCreateClick}
+              disabled={loading}
+            >
               新建問卷
             </Button>
             <Divider style={{ borderTop: "transparent" }} />

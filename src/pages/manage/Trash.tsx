@@ -3,11 +3,21 @@ import { useSearchParams } from "react-router-dom";
 import { useTitle } from "ahooks";
 import styles from "./common.module.scss";
 import QuestionCard from "../../components/QuestionCard";
-import { Empty, Table, Typography, Tag, Space, Button, Modal } from "antd";
+import {
+  Empty,
+  Table,
+  Typography,
+  Tag,
+  Space,
+  Button,
+  Modal,
+  Spin,
+} from "antd";
 import { title } from "process";
 import { render } from "@testing-library/react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ListSearch from "../../components/ListSearch";
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 const { Title } = Typography;
 const { confirm } = Modal;
 const rawQuestionList = [
@@ -38,7 +48,8 @@ const rawQuestionList = [
 ];
 
 const Trash: FC = () => {
-  const [questonList, setQuestionList] = useState(rawQuestionList);
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total = 0 } = data;
   const [selectIds, setSelectIds] = useState<string[]>([]);
   const tableColums = [
     { title: "標題", dataIndex: "title" },
@@ -84,7 +95,7 @@ const Trash: FC = () => {
         </Space>
       </div>
       <Table
-        dataSource={questonList}
+        dataSource={list}
         columns={tableColums}
         pagination={false}
         rowKey={(q) => q._id}
@@ -109,8 +120,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questonList.length === 0 && <Empty description="暫無數據" />}
-        {questonList.length > 0 && TableElem}
+        {loading && (
+          <div style={{ textAlign: "center" }}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暫無數據" />}
+        {!loading && list.length > 0 && TableElem}
       </div>
       <div className={styles.footer}>next page</div>
     </>
