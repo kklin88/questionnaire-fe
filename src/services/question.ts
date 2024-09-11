@@ -4,8 +4,8 @@ type SearchOption = {
   keyword: string;
   isStar: boolean;
   isDeleted: boolean;
-  // page
-  // pagesize
+  page: number;
+  pageSize: number;
 };
 // 獲取的那個問卷信息
 export async function getQuestionService(id: string): Promise<ResDataType> {
@@ -26,5 +26,14 @@ export async function getQuestionListService(
 ): Promise<ResDataType> {
   const url = "/api/question";
   const data = (await axios.get(url, { params: opt })) as ResDataType;
+  return data;
+}
+
+export async function updateQuestionService(
+  id: string,
+  opt: { [key: string]: any },
+): Promise<ResDataType> {
+  const url = `/api/question/${id}`;
+  const data = (await axios.patch(url, opt)) as ResDataType;
   return data;
 }

@@ -18,6 +18,7 @@ import { render } from "@testing-library/react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ListSearch from "../../components/ListSearch";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import ListPage from "../../components/ListPage";
 const { Title } = Typography;
 const { confirm } = Modal;
 const rawQuestionList = [
@@ -128,7 +129,9 @@ const Trash: FC = () => {
         {!loading && list.length === 0 && <Empty description="暫無數據" />}
         {!loading && list.length > 0 && TableElem}
       </div>
-      <div className={styles.footer}>next page</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   );
 };

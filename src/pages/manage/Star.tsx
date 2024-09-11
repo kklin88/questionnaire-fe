@@ -4,9 +4,9 @@ import { useTitle } from "ahooks";
 import styles from "./common.module.scss";
 import QuestionCard from "../../components/QuestionCard";
 import ListSearch from "../../components/ListSearch";
-import { Empty, Spin, Typography } from "antd";
+import { Empty, Spin, Typography, Pagination } from "antd";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
-
+import ListPage from "../../components/ListPage";
 const { Title } = Typography;
 const Star: FC = () => {
   useTitle("kk問卷 - 星標問卷");
@@ -37,7 +37,9 @@ const Star: FC = () => {
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
-      <div className={styles.footer}>next page</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   );
 };
