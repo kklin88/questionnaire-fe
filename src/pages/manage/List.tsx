@@ -54,6 +54,18 @@ const List: FC = () => {
   const haveMoreData = total > list.length; //有沒有更多的，未加載完成的數據
   const [searchParams] = useSearchParams(); //url參數，雖然沒有page pageSize，但有keyword
   const keyword = searchParams.get(LIST_SEARCH_PARAM_KEY) || "";
+  // 使用 useEffect加載問卷列表，其中 useEffect不能直接執行異步函數，使用async包裹
+  // useEffect(()=>{
+  //   async function  load() {
+  //     const data  = await getQuestionListService()
+  //     const {list = [],total=0} = data
+  //     setList(list)
+  //     setTotal(total)
+  //   }
+  //   load()
+  // },[])
+
+  // 當url參數（keyword）變化時，重新加載
   useEffect(() => {
     setStarted(false);
     setPage(1);
@@ -71,7 +83,7 @@ const List: FC = () => {
       return data;
     },
     {
-      manual: true,
+      manual: true, //手動模式，不自動執行
       onSuccess(result) {
         const { list: l = [], total = 0 } = result;
         setList(list.concat(l)); //累計
@@ -86,12 +98,12 @@ const List: FC = () => {
     () => {
       const elem = containerRef.current;
       if (elem == null) return;
-      const domRect = elem.getBoundingClientRect();
+      const domRect = elem.getBoundingClientRect(); //通過判斷bottom的位置，判斷是否還有更多數據需要加載
       if (domRect == null) return;
       const { bottom } = domRect;
       if (bottom <= document.body.clientHeight) {
         console.log("load more");
-        load();
+        load(); //觸發加載
         setStarted(true);
       }
     },
@@ -126,8 +138,8 @@ const List: FC = () => {
   //   load();
   // }, []);
   const LoadMoreContentElem = useMemo(() => {
-    if (!started || loading) return <Spin />;
-    if (total === 0) return <Empty description="暫無數據" />;
+    if (!started || loading) return <Spin />; //   判斷是否已經開始加載，還在加載中
+    if (total === 0) return <Empty description="暫無數據" />; //   判斷是否有數據，沒有數據顯示空白
     if (!haveMoreData) return <span>沒有更多了</span>;
     return <span>開始加載下一頁</span>;
   }, [started, loading, haveMoreData]);
@@ -148,6 +160,7 @@ const List: FC = () => {
             <Spin />
           </div>
         )} */}
+        {/* 根據獲得的list 進行遍歷展示 */}
         {list.length > 0 &&
           list.map((q: any) => {
             //   通過{...q}解構傳遞所有屬性

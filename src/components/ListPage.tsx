@@ -26,7 +26,7 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
 
   //   page pageSize改變時，跳轉頁面（改變url參數）
   const nav = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname } = useLocation(); //獲取當前的路由
   function handlePageChange(page: number, pageSize: number) {
     console.log(page, pageSize); //改變url參數
     searchParams.set(LIST_PAGE_PARAM_KEY, page.toString());

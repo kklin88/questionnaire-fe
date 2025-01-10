@@ -14,7 +14,7 @@ import { useRequest } from "ahooks";
 const ManageLayout: FC = () => {
   const nav = useNavigate();
   const { pathname } = useLocation();
-
+  // 在連續點擊時候設計loading 在loading的時候按鈕disable
   // const [loading,setLoading] = useState(false)
   // async function handleCreateClick() {
   //   setLoading(true)
@@ -30,6 +30,7 @@ const ManageLayout: FC = () => {
   //   setLoading(false)
   // }
 
+  // 手動觸發 useRequest
   const { loading, run: handleCreateClick } = useRequest(
     createQuestionService,
     {

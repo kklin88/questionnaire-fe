@@ -1,13 +1,39 @@
 import React, { FC } from "react";
-import { Typography, Space, Button, Checkbox, Form, Input } from "antd";
+import {
+  Typography,
+  Space,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+} from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Register.module.scss";
 import { LOGIN_PATHNAME } from "../router";
+import { registerService } from "../services/user";
+import { useRequest } from "ahooks";
 const { Title } = Typography;
 const Register: FC = () => {
+  const nav = useNavigate();
+  const { run } = useRequest(
+    async (values) => {
+      const { username, password, nickname } = values; //解構
+      await registerService(username, password, nickname);
+    },
+    {
+      manual: true, //手動模式
+      onSuccess() {
+        message.success("註冊成功");
+        nav(LOGIN_PATHNAME);
+      },
+    },
+  );
+
   const onFinish = (values: any) => {
     console.log(values);
+    run(values); //調用ajax
   };
   return (
     <>

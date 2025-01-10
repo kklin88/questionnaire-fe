@@ -39,6 +39,7 @@ const Star: FC = () => {
       </div>
       <div className={styles.footer}>
         <ListPage total={total} />
+        {/* <Pagination defaultCurrent={1} total={total}/> */}
       </div>
     </>
   );

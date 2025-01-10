@@ -12,7 +12,10 @@ import {
 } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
 import styles from "./Login.module.scss";
-import { REGISTER_PATHNAME } from "../router";
+import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from "../router";
+import { loginService } from "../services/user";
+import { useRequest } from "ahooks";
+import { setToken } from "../utils/user-token";
 
 const { Title } = Typography;
 const USERNAME_KEY = "USERNAME";
@@ -33,14 +36,31 @@ function getUserInfoFromStorage() {
 }
 
 const Login: FC = () => {
+  const nav = useNavigate();
   const [form] = Form.useForm();
   useEffect(() => {
     const { username, password } = getUserInfoFromStorage();
     form.setFieldsValue({ username, password });
   }, []);
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password);
+      return data;
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = "" } = result;
+        setToken(token); // 存儲token 到 localStorage
+        message.success("登陸成功");
+        nav(MANAGE_INDEX_PATHNAME); //導航到我的問卷
+      },
+    },
+  );
   const onFinish = (values: any) => {
     console.log(values);
     const { username, password, remember } = values;
+    run(username, password); //執行ajax
     if (remember) {
       rememberUser(username, password);
     } else {
@@ -100,7 +120,7 @@ const Login: FC = () => {
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  登陸
+                  登入
                 </Button>
                 <Link to={REGISTER_PATHNAME}> 註冊新用戶</Link>
               </Space>

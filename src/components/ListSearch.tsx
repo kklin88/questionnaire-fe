@@ -19,7 +19,7 @@ const ListSearch = () => {
 
   function handleSearch(value: string) {
     console.log(value);
-    //跳轉頁面，增加url參數
+    //跳轉頁面，增加url參數  search的時候不包含page pageSize
     nav({ pathname, search: `${LIST_SEARCH_PARAM_KEY}=${value}` }); //去掉了 page pageSize
   }
   return (

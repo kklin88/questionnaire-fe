@@ -1,8 +1,9 @@
-// useLoadQuestionData
+// useLoadQuestionData 加載問卷信息
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getQuestionService } from "../services/question";
 import { useRequest } from "ahooks";
+// 自定義hooks 為一個函數
 function useLoadQuestionData() {
   const { id = "" } = useParams();
   //   const [loading, setLoading] = useState(true);

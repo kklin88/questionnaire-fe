@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useTitle } from "ahooks";
+import { useRequest, useTitle } from "ahooks";
 import styles from "./common.module.scss";
 import QuestionCard from "../../components/QuestionCard";
 import {
@@ -12,6 +12,7 @@ import {
   Button,
   Modal,
   Spin,
+  message,
 } from "antd";
 import { title } from "process";
 import { render } from "@testing-library/react";
@@ -19,6 +20,10 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ListSearch from "../../components/ListSearch";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 import ListPage from "../../components/ListPage";
+import {
+  deleteQuestionService,
+  updateQuestionService,
+} from "../../services/question";
 const { Title } = Typography;
 const { confirm } = Modal;
 const rawQuestionList = [
@@ -49,9 +54,43 @@ const rawQuestionList = [
 ];
 
 const Trash: FC = () => {
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const {
+    data = {},
+    loading,
+    refresh,
+  } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total = 0 } = data;
   const [selectIds, setSelectIds] = useState<string[]>([]);
+  // 恢復
+  const { run: recover } = useRequest(
+    async () => {
+      // 批量恢復 for await 遍歷執行異步handler
+      for await (const id of selectIds) {
+        await updateQuestionService(id, { isDelete: false });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, //防抖
+      onSuccess() {
+        message.success("恢復成功");
+        refresh(); //恢復完重新刷新
+        setSelectIds([]);
+      },
+    },
+  );
+  // 批量測底刪除
+  const { loading: deleteLoading, run: deleteQuestion } = useRequest(
+    async () => await deleteQuestionService(selectIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success("刪除成功");
+        refresh();
+        setSelectIds([]);
+      },
+    },
+  );
   const tableColums = [
     { title: "標題", dataIndex: "title" },
     {
@@ -79,14 +118,18 @@ const Trash: FC = () => {
       title: "確認徹底刪除該問卷",
       icon: <ExclamationCircleOutlined />,
       content: "刪除以後不能找回",
-      onOk: () => alert(`刪除${JSON.stringify(selectIds)}`),
+      onOk: deleteQuestion,
     });
   }
   const TableElem = (
     <>
       <div style={{ marginBottom: "16px" }}>
         <Space>
-          <Button type="primary" disabled={selectIds.length === 0}>
+          <Button
+            type="primary"
+            disabled={selectIds.length === 0}
+            onClick={recover}
+          >
             恢復
           </Button>
 
