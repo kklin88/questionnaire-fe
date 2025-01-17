@@ -74,3 +74,19 @@ export const HOME_PATHNAME = "/home";
 export const LOGIN_PATHNAME = "/login";
 export const REGISTER_PATHNAME = "/register";
 export const MANAGE_INDEX_PATHNAME = "/manage/list";
+
+// 判斷當前路由是否是註冊頁
+export function isLoginOrRegister(pathname: string) {
+  if ([LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
+    return true;
+  }
+  return false;
+}
+
+//判斷當前頁面是否需要用戶信息
+export function isNoNeedUserInfo(pathname: string) {
+  if ([HOME_PATHNAME, LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)) {
+    return true;
+  }
+  return false;
+}
