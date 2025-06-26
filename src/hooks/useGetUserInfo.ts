@@ -1,9 +1,9 @@
 import { useSafeState } from "ahooks";
 import { useSelector } from "react-redux";
-import { Statetype } from "../store";
+import { StateType } from "../store";
 import { UserStateType } from "../store/userReducer";
 function useGetUserInfo() {
-  const { username, nickname } = useSelector<Statetype>(
+  const { username, nickname } = useSelector<StateType>(
     (state) => state.user,
   ) as UserStateType;
   return { username, nickname };

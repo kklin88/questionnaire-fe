@@ -7,7 +7,7 @@ import {
   LOGIN_PATHNAME,
   MANAGE_INDEX_PATHNAME,
 } from "../router";
-import path from "path";
+
 function useNavPage(waitingUserData: boolean) {
   const { username } = useGetUserInfo();
   const { pathname } = useLocation();
