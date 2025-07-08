@@ -13,6 +13,7 @@ export type ResDataType = {
 };
 
 const instance = axios.create({
+  baseURL: process.env.REACT_APP_API_URL, //根據 .env 檔自動切換開發 / 部署用的 API 網址
   timeout: 10 * 1000,
 });
 // request 攔截：每次請求都帶上 token
