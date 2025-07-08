@@ -1,0 +1,7 @@
+# #!/bin/sh
+# . "$(dirname "$0")/_/husky.sh"
+# npx lint-staged
+# 提交前执行这些命令hook
+npm run lint 
+npm run format
+git add .
