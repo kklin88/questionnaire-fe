@@ -12,5 +12,5 @@ export default {
   type: "questionTitle", //需要和後端統一好
   Component, //在中間畫布顯示的組件
   PropsComponent, //右側修改屬性面板
-  defaultProps: QuestionTitleDefaultProps,
+  defaultProps: QuestionTitleDefaultProps, //在新增的時候多默認屬性
 };

@@ -2,8 +2,10 @@ import React, { FC, MouseEvent } from "react";
 import { Spin } from "antd";
 import { useDispatch } from "react-redux";
 import classNames from "classnames";
+import useBindCanvasKeyPress from "../../../hooks/useBindCanvasKeyPress";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
 import { getComponentConfByType } from "../../../components/QuestionComponents";
+
 import styles from "./EditCanvas.module.scss";
 import QuestionInput from "../../../components/QuestionComponents/QuestionInput/Component";
 import QuestionTitle from "../../../components/QuestionComponents/QuestionTitle/Component";
@@ -32,6 +34,7 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
     event.stopPropagation(); //阻止事件冒泡
     dispatch(changeSelectedId(id));
   }
+  useBindCanvasKeyPress();
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -41,25 +44,29 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
   }
   return (
     <div className={styles.canvas}>
-      {componentList.map((c) => {
-        const { fe_id } = c;
-        //拼接classname
-        const wrapperDefaultClassName = styles["component-wrapper"];
-        const selectedClassName = styles.selected;
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectedClassName]: fe_id === selectedId,
-        });
-        return (
-          <div
-            key={fe_id}
-            className={wrapperClassName}
-            onClick={(e) => handleClick(e, fe_id)}
-          >
-            <div className={styles.component}>{genComponent(c)}</div>
-          </div>
-        );
-      })}
+      {componentList
+        .filter((c) => !c.isHidden)
+        .map((c) => {
+          const { fe_id, isLocked } = c;
+          //拼接classname
+          const wrapperDefaultClassName = styles["component-wrapper"];
+          const selectedClassName = styles.selected;
+          const lockedClassName = styles.locked;
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectedClassName]: fe_id === selectedId,
+            [lockedClassName]: isLocked,
+          });
+          return (
+            <div
+              key={fe_id}
+              className={wrapperClassName}
+              onClick={(e) => handleClick(e, fe_id)}
+            >
+              <div className={styles.component}>{genComponent(c)}</div>
+            </div>
+          );
+        })}
       {/* <div className={styles["component-wrapper"]}>
         <div className={styles.component}>
           <QuestionTitle />

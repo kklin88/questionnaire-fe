@@ -1,8 +1,16 @@
 import { message } from "antd";
 import axios from "axios";
 import { getToken } from "../utils/user-token";
-import { error } from "console";
-import { get } from "http";
+
+// 定義返回格式
+export type ResType = {
+  errno: number;
+  data?: ResDataType;
+  msg?: string;
+};
+export type ResDataType = {
+  [key: string]: any;
+};
 
 const instance = axios.create({
   timeout: 10 * 1000,
@@ -30,13 +38,3 @@ instance.interceptors.response.use((res) => {
   return data as any;
 });
 export default instance;
-
-// 定義返回格式
-export type ResType = {
-  errno: number;
-  data?: ResDataType;
-  msg?: string;
-};
-export type ResDataType = {
-  [key: string]: any;
-};
