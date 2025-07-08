@@ -2,6 +2,7 @@
   "name": "questionnaire-fn",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kklin88.github.io/questionnaire-fe",
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@reduxjs/toolkit": "^2.5.0",
@@ -16,6 +17,7 @@
     "antd": "^5.20.0",
     "axios": "^1.7.4",
     "formik": "^2.4.6",
+    "gh-pages": "^6.3.0",
     "lodash.clonedeep": "^4.5.0",
     "mockjs": "^1.1.0",
     "react": "^18.3.1",
@@ -32,6 +34,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "lint": "eslint 'src/**/*.+(js|ts|jsx|tsx)' ",
     "format": "prettier --write 'src/**/*.+(js|ts|jsx|tsx)'",
     "prepare": "husky"
